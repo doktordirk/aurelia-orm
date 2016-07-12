@@ -8,122 +8,52 @@ import {bindable,customElement} from 'aurelia-templating';
 
 import './component/association-select';
 import './component/paged';
-
-/**
- * The Repository basis class
- */
-export declare class Repository {
-  transport: any;
-  
-  /**
-     * Construct.
-     *
-     * @param {Config} clientConfig
-     *
-     * @constructor
-     */
-  constructor(clientConfig?: any);
-  
-  /**
-     * Get the transport for the resource this repository represents.
-     *
-     * @return {Rest}
-     */
-  getTransport(): any;
-  
-  /**
-     * Set the associated entity's meta data
-     *
-     * @param {Object} meta
-     */
-  setMeta(meta?: any): any;
-  
-  /**
-     * Get the associated entity's meta data.
-     * @return {Object}
-     */
-  getMeta(): any;
-  
-  /**
-     * Set the resource
-     *
-     * @param {string} resource
-     * @return {Repository} this
-     * @chainable
-     */
-  setResource(resource?: any): any;
-  
-  /**
-     * Get the resource
-     *
-     * @return {string|null}
-     */
-  getResource(): any;
-  
-  /**
-     * Perform a find query and populate entities with the retrieved data.
-     *
-     * @param {{}|Number|String} criteria Criteria to add to the query. A plain String or Number will be used as relative path.
-     * @param {boolean}          [raw]    Set to true to get a POJO in stead of populated entities.
-     *
-     * @return {Promise<Entity|[Entity]>}
-     */
-  find(criteria?: any, raw?: any): any;
-  
-  /**
-     * Perform a find query for `path` and populate entities with the retrieved data.
-     *
-     * @param {string}           path
-     * @param {{}|Number|String} criteria Criteria to add to the query. A plain String or Number will be used as relative path.
-     * @param {boolean}          [raw]    Set to true to get a POJO in stead of populated entities.
-     *
-     * @return {Promise<Entity|[Entity]>}
-     */
-  findPath(path?: any, criteria?: any, raw?: any): any;
-  
-  /**
-     * Perform a count on the resource.
-     *
-     * @param {null|{}} criteria
-     *
-     * @return {Promise<Number>}
-     */
-  count(criteria?: any): any;
-  
-  /**
-     * Get new populated entity or entities based on supplied data including associations
-     *
-     * @param {{}|[{}]} data|[data] The data to populate with
-     *
-     * @return {Entity|[Entity]}
-     */
-  populateEntities(data?: any): any;
-  
-  /**
-     * Populate a (new) entity including associations
-     *
-     * @param {{}}     data The data to populate with
-     * @param {Entity} [entity] optional. if not set, a new entity is returned
-     *
-     * @return {Entity}
-     */
-  getPopulatedEntity(data?: any, entity?: any): any;
-  
-  /**
-     * Get a new instance for entityReference.
-     *
-     * @return {Entity}
-     */
-  getNewEntity(): any;
-  
-  /**
-     * Populate a new entity with the empty associations set.
-     *
-     * @return {Entity}
-     */
-  getNewPopulatedEntity(): any;
-}
-
+export declare {
+  DefaultRepository
+} from 'aurelia-orm/default-repository';
+export declare {
+  Repository
+} from 'aurelia-orm/repository';
+export declare {
+  Entity
+} from 'aurelia-orm/entity';
+export declare {
+  OrmMetadata
+} from 'aurelia-orm/orm-metadata';
+export declare {
+  association
+} from 'aurelia-orm/decorator/association';
+export declare {
+  resource
+} from 'aurelia-orm/decorator/resource';
+export declare {
+  endpoint
+} from 'aurelia-orm/decorator/endpoint';
+export declare {
+  name
+} from 'aurelia-orm/decorator/name';
+export declare {
+  repository
+} from 'aurelia-orm/decorator/repository';
+export declare {
+  validation
+} from 'aurelia-orm/decorator/validation';
+export declare {
+  type
+} from 'aurelia-orm/decorator/type';
+export declare {
+  validatedResource
+} from 'aurelia-orm/decorator/validated-resource';
+export declare {
+  data
+} from 'aurelia-orm/decorator/data';
+export declare function configure(aurelia?: any, configCallback?: any): any;
+export declare {
+  EntityManager,
+  HasAssociationValidationRule,
+  ValidationGroup,
+  logger
+};
 /**
  * The DefaultRepository class
  * @transient
@@ -131,68 +61,69 @@ export declare class Repository {
 export declare class DefaultRepository extends Repository {
 
 }
-export declare class OrmMetadata {
-  static forTarget(target?: any): any;
-}
-
 /**
- * The MetaData class for Entity and Repository
- *
+ * The EntityManager class
  */
-export declare class Metadata {
-  
-  // The key used to identify this specific metadata
-  static key: any;
+export declare class EntityManager {
+  repositories: any;
+  entities: any;
   
   /**
-     * Construct metadata with sensible defaults (so we can make assumptions in the code).
+     * Construct a new EntityManager.
+     *
+     * @param {Container} container aurelia-dependency-injection container
      */
-  constructor();
+  constructor(container?: any);
   
   /**
-     * Add a value to an array.
+     * Register an array of entity references.
      *
-     * @param {string} key
-     * @param {*} value
+     * @param {Entity[]|Entity} entities Array or object of entities.
      *
-     * @return {Metadata} this
-     * @chainable
-  */
-  addTo(key?: any, value?: any): any;
-  
-  /**
-     * Set a value for key, or one level deeper (key.key).
-     *
-     * @param {string} key
-     * @param {string|*} valueOrNestedKey
-     * @param {null|*} [valueOrNull]
-     *
-     * @return {Metadata} this
+     * @return {EntityManager} this
      * @chainable
      */
-  put(key?: any, valueOrNestedKey?: any, valueOrNull?: any): any;
+  registerEntities(entities?: any): any;
   
   /**
-     * Check if key, or key.nested exists.
+     * Register an Entity reference.
      *
-     * @param {string} key
-     * @param {string} [nested]
+     * @param {Entity} entity
      *
-     * @return {boolean}
+     * @return {EntityManager} this
+     * @chainable
      */
-  has(key?: any, nested?: any): any;
+  registerEntity(entity?: any): any;
   
   /**
-     * Fetch key or key.nested from metadata.
+     * Get a repository instance.
      *
-     * @param {string} key
-     * @param {string} [nested]
+     * @param {Entity|string} entity
      *
-     * @return {*}
+     * @return {Repository}
+     * @throws {Error}
      */
-  fetch(key?: any, nested?: any): any;
+  getRepository(entity?: any): any;
+  
+  /**
+     * Resolve given resource value to an entityReference
+     *
+     * @param {Entity|string} resource
+     *
+     * @return {Entity}
+     * @throws {Error}
+     */
+  resolveEntityReference(resource?: any): any;
+  
+  /**
+     * Get an instance for `entity`
+     *
+     * @param {string|Entity} entity
+     *
+     * @return {Entity}
+     */
+  getEntity(entity?: any): any;
 }
-
 /**
  * The Entity basis class
  * @transient
@@ -463,117 +394,182 @@ export declare class Entity {
      */
   asJson(shallow?: any): any;
 }
+export * from 'aurelia-orm/aurelia-orm';
+export declare class OrmMetadata {
+  static forTarget(target?: any): any;
+}
 
 /**
- * The EntityManager class
+ * The MetaData class for Entity and Repository
+ *
  */
-export declare class EntityManager {
-  repositories: any;
-  entities: any;
+export declare class Metadata {
+  
+  // The key used to identify this specific metadata
+  static key: any;
   
   /**
-     * Construct a new EntityManager.
-     *
-     * @param {Container} container aurelia-dependency-injection container
+     * Construct metadata with sensible defaults (so we can make assumptions in the code).
      */
-  constructor(container?: any);
+  constructor();
   
   /**
-     * Register an array of entity references.
+     * Add a value to an array.
      *
-     * @param {Entity[]|Entity} entities Array or object of entities.
+     * @param {string} key
+     * @param {*} value
      *
-     * @return {EntityManager} this
+     * @return {Metadata} this
+     * @chainable
+  */
+  addTo(key?: any, value?: any): any;
+  
+  /**
+     * Set a value for key, or one level deeper (key.key).
+     *
+     * @param {string} key
+     * @param {string|*} valueOrNestedKey
+     * @param {null|*} [valueOrNull]
+     *
+     * @return {Metadata} this
      * @chainable
      */
-  registerEntities(entities?: any): any;
+  put(key?: any, valueOrNestedKey?: any, valueOrNull?: any): any;
   
   /**
-     * Register an Entity reference.
+     * Check if key, or key.nested exists.
      *
-     * @param {Entity} entity
+     * @param {string} key
+     * @param {string} [nested]
      *
-     * @return {EntityManager} this
-     * @chainable
+     * @return {boolean}
      */
-  registerEntity(entity?: any): any;
+  has(key?: any, nested?: any): any;
   
   /**
-     * Get a repository instance.
+     * Fetch key or key.nested from metadata.
      *
-     * @param {Entity|string} entity
+     * @param {string} key
+     * @param {string} [nested]
      *
-     * @return {Repository}
-     * @throws {Error}
+     * @return {*}
      */
-  getRepository(entity?: any): any;
-  
-  /**
-     * Resolve given resource value to an entityReference
-     *
-     * @param {Entity|string} resource
-     *
-     * @return {Entity}
-     * @throws {Error}
-     */
-  resolveEntityReference(resource?: any): any;
-  
-  /**
-     * Get an instance for `entity`
-     *
-     * @param {string|Entity} entity
-     *
-     * @return {Entity}
-     */
-  getEntity(entity?: any): any;
+  fetch(key?: any, nested?: any): any;
 }
-export declare {
-  DefaultRepository
-} from 'aurelia-orm/default-repository';
-export declare {
-  Repository
-} from 'aurelia-orm/repository';
-export declare {
-  Entity
-} from 'aurelia-orm/entity';
-export declare {
-  OrmMetadata
-} from 'aurelia-orm/orm-metadata';
-export declare {
-  association
-} from 'aurelia-orm/decorator/association';
-export declare {
-  resource
-} from 'aurelia-orm/decorator/resource';
-export declare {
-  endpoint
-} from 'aurelia-orm/decorator/endpoint';
-export declare {
-  name
-} from 'aurelia-orm/decorator/name';
-export declare {
-  repository
-} from 'aurelia-orm/decorator/repository';
-export declare {
-  validation
-} from 'aurelia-orm/decorator/validation';
-export declare {
-  type
-} from 'aurelia-orm/decorator/type';
-export declare {
-  validatedResource
-} from 'aurelia-orm/decorator/validated-resource';
-export declare {
-  data
-} from 'aurelia-orm/decorator/data';
-export declare function configure(aurelia?: any, configCallback?: any): any;
-export declare {
-  EntityManager,
-  HasAssociationValidationRule,
-  ValidationGroup,
-  logger
-};
-export * from 'aurelia-orm/aurelia-orm';
+/**
+ * The Repository basis class
+ */
+export declare class Repository {
+  transport: any;
+  
+  /**
+     * Construct.
+     *
+     * @param {Config} clientConfig
+     *
+     * @constructor
+     */
+  constructor(clientConfig?: any);
+  
+  /**
+     * Get the transport for the resource this repository represents.
+     *
+     * @return {Rest}
+     */
+  getTransport(): any;
+  
+  /**
+     * Set the associated entity's meta data
+     *
+     * @param {Object} meta
+     */
+  setMeta(meta?: any): any;
+  
+  /**
+     * Get the associated entity's meta data.
+     * @return {Object}
+     */
+  getMeta(): any;
+  
+  /**
+     * Set the resource
+     *
+     * @param {string} resource
+     * @return {Repository} this
+     * @chainable
+     */
+  setResource(resource?: any): any;
+  
+  /**
+     * Get the resource
+     *
+     * @return {string|null}
+     */
+  getResource(): any;
+  
+  /**
+     * Perform a find query and populate entities with the retrieved data.
+     *
+     * @param {{}|Number|String} criteria Criteria to add to the query. A plain String or Number will be used as relative path.
+     * @param {boolean}          [raw]    Set to true to get a POJO in stead of populated entities.
+     *
+     * @return {Promise<Entity|[Entity]>}
+     */
+  find(criteria?: any, raw?: any): any;
+  
+  /**
+     * Perform a find query for `path` and populate entities with the retrieved data.
+     *
+     * @param {string}           path
+     * @param {{}|Number|String} criteria Criteria to add to the query. A plain String or Number will be used as relative path.
+     * @param {boolean}          [raw]    Set to true to get a POJO in stead of populated entities.
+     *
+     * @return {Promise<Entity|[Entity]>}
+     */
+  findPath(path?: any, criteria?: any, raw?: any): any;
+  
+  /**
+     * Perform a count on the resource.
+     *
+     * @param {null|{}} criteria
+     *
+     * @return {Promise<Number>}
+     */
+  count(criteria?: any): any;
+  
+  /**
+     * Get new populated entity or entities based on supplied data including associations
+     *
+     * @param {{}|[{}]} data|[data] The data to populate with
+     *
+     * @return {Entity|[Entity]}
+     */
+  populateEntities(data?: any): any;
+  
+  /**
+     * Populate a (new) entity including associations
+     *
+     * @param {{}}     data The data to populate with
+     * @param {Entity} [entity] optional. if not set, a new entity is returned
+     *
+     * @return {Entity}
+     */
+  getPopulatedEntity(data?: any, entity?: any): any;
+  
+  /**
+     * Get a new instance for entityReference.
+     *
+     * @return {Entity}
+     */
+  getNewEntity(): any;
+  
+  /**
+     * Populate a new entity with the empty associations set.
+     *
+     * @return {Entity}
+     */
+  getNewPopulatedEntity(): any;
+}
 export declare class AssociationSelect {
   criteria: any;
   repository: any;
