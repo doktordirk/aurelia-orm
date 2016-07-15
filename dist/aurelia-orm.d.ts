@@ -394,7 +394,6 @@ export declare class Entity {
      */
   asJson(shallow?: any): any;
 }
-export * from 'aurelia-orm/aurelia-orm';
 export declare class OrmMetadata {
   static forTarget(target?: any): any;
 }
