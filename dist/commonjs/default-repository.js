@@ -7,21 +7,9 @@ exports.DefaultRepository = undefined;
 
 var _dec, _class;
 
-var _typer = require('typer');
-
-var _typer2 = _interopRequireDefault(_typer);
-
 var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
-var _aureliaApi = require('aurelia-api');
-
-var _aureliaMetadata = require('aurelia-metadata');
-
-var _aureliaValidation = require('aurelia-validation');
-
-var _aureliaLogging = require('aurelia-logging');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _repository = require('./repository');
 
 
 
@@ -39,4 +27,4 @@ var DefaultRepository = exports.DefaultRepository = (_dec = (0, _aureliaDependen
   }
 
   return DefaultRepository;
-}(Repository)) || _class);
+}(_repository.Repository)) || _class);

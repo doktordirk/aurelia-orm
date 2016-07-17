@@ -9,21 +9,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _dec, _dec2, _class;
 
-var _typer = require('typer');
-
-var _typer2 = _interopRequireDefault(_typer);
+var _aureliaValidation = require('aurelia-validation');
 
 var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
-var _aureliaApi = require('aurelia-api');
-
-var _aureliaMetadata = require('aurelia-metadata');
-
-var _aureliaValidation = require('aurelia-validation');
-
-var _aureliaLogging = require('aurelia-logging');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _ormMetadata = require('./orm-metadata');
 
 
 
@@ -31,7 +21,7 @@ var Entity = exports.Entity = (_dec = (0, _aureliaDependencyInjection.transient)
   function Entity(validator) {
     
 
-    this.define('__meta', OrmMetadata.forTarget(this.constructor)).define('__cleanValues', {}, true);
+    this.define('__meta', _ormMetadata.OrmMetadata.forTarget(this.constructor)).define('__cleanValues', {}, true);
 
     if (!this.hasValidation()) {
       return this;
@@ -71,7 +61,7 @@ var Entity = exports.Entity = (_dec = (0, _aureliaDependencyInjection.transient)
   };
 
   Entity.getIdProperty = function getIdProperty() {
-    var idProperty = OrmMetadata.forTarget(this).fetch('idProperty');
+    var idProperty = _ormMetadata.OrmMetadata.forTarget(this).fetch('idProperty');
 
     return idProperty;
   };
@@ -303,7 +293,7 @@ var Entity = exports.Entity = (_dec = (0, _aureliaDependencyInjection.transient)
   };
 
   Entity.getResource = function getResource() {
-    return OrmMetadata.forTarget(this).fetch('resource');
+    return _ormMetadata.OrmMetadata.forTarget(this).fetch('resource');
   };
 
   Entity.prototype.getResource = function getResource() {
@@ -333,7 +323,7 @@ var Entity = exports.Entity = (_dec = (0, _aureliaDependencyInjection.transient)
   };
 
   Entity.getName = function getName() {
-    var metaName = OrmMetadata.forTarget(this).fetch('name');
+    var metaName = _ormMetadata.OrmMetadata.forTarget(this).fetch('name');
 
     if (metaName) {
       return metaName;

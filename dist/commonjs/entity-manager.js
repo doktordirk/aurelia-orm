@@ -7,21 +7,13 @@ exports.EntityManager = undefined;
 
 var _dec, _class;
 
-var _typer = require('typer');
+var _entity = require('./entity');
 
-var _typer2 = _interopRequireDefault(_typer);
+var _defaultRepository = require('./default-repository');
 
 var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
-var _aureliaApi = require('aurelia-api');
-
-var _aureliaMetadata = require('aurelia-metadata');
-
-var _aureliaValidation = require('aurelia-validation');
-
-var _aureliaLogging = require('aurelia-logging');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _ormMetadata = require('./orm-metadata');
 
 
 
@@ -48,7 +40,7 @@ var EntityManager = exports.EntityManager = (_dec = (0, _aureliaDependencyInject
   };
 
   EntityManager.prototype.registerEntity = function registerEntity(entity) {
-    this.entities[OrmMetadata.forTarget(entity).fetch('resource')] = entity;
+    this.entities[_ormMetadata.OrmMetadata.forTarget(entity).fetch('resource')] = entity;
 
     return this;
   };
@@ -69,7 +61,7 @@ var EntityManager = exports.EntityManager = (_dec = (0, _aureliaDependencyInject
       return this.repositories[resource];
     }
 
-    var metaData = OrmMetadata.forTarget(reference);
+    var metaData = _ormMetadata.OrmMetadata.forTarget(reference);
     var repository = metaData.fetch('repository');
     var instance = this.container.get(repository);
 
@@ -81,7 +73,7 @@ var EntityManager = exports.EntityManager = (_dec = (0, _aureliaDependencyInject
     instance.resource = resource;
     instance.entityManager = this;
 
-    if (instance instanceof DefaultRepository) {
+    if (instance instanceof _defaultRepository.DefaultRepository) {
       this.repositories[resource] = instance;
     }
 
@@ -92,7 +84,7 @@ var EntityManager = exports.EntityManager = (_dec = (0, _aureliaDependencyInject
     var entityReference = resource;
 
     if (typeof resource === 'string') {
-      entityReference = this.entities[resource] || Entity;
+      entityReference = this.entities[resource] || _entity.Entity;
     }
 
     if (typeof entityReference === 'function') {

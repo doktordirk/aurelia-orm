@@ -1,12 +1,10 @@
-import typer from 'typer';
-import {inject,transient,Container} from 'aurelia-dependency-injection';
-import {Config} from 'aurelia-api';
-import {metadata} from 'aurelia-metadata';
-import {Validation,ValidationGroup} from 'aurelia-validation';
 import {getLogger} from 'aurelia-logging';
-
+import {EntityManager} from './entity-manager';
+import {HasAssociationValidationRule} from './validator/has-association';
+import {ValidationGroup} from 'aurelia-validation';
 import './component/association-select';
 import './component/paged';
+export {Repository} from './repository';
 export {DefaultRepository} from './default-repository';
 export {Repository} from './repository';
 export {Entity} from './entity';

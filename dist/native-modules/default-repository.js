@@ -6,12 +6,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-import typer from 'typer';
-import { inject, transient, Container } from 'aurelia-dependency-injection';
-import { Config } from 'aurelia-api';
-import { metadata } from 'aurelia-metadata';
-import { Validation, ValidationGroup } from 'aurelia-validation';
-import { getLogger } from 'aurelia-logging';
+import { transient } from 'aurelia-dependency-injection';
+import { Repository } from './repository';
 
 export var DefaultRepository = (_dec = transient(), _dec(_class = function (_Repository) {
   _inherits(DefaultRepository, _Repository);

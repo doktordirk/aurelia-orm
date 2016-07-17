@@ -1,28 +1,17 @@
 'use strict';
 
-System.register(['typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging'], function (_export, _context) {
+System.register(['aurelia-metadata', './default-repository'], function (_export, _context) {
   "use strict";
 
-  var typer, inject, transient, Container, Config, metadata, Validation, ValidationGroup, getLogger, _typeof, _class, _temp, OrmMetadata, Metadata;
+  var metadata, DefaultRepository, _typeof, _class, _temp, OrmMetadata, Metadata;
 
   
 
   return {
-    setters: [function (_typer) {
-      typer = _typer.default;
-    }, function (_aureliaDependencyInjection) {
-      inject = _aureliaDependencyInjection.inject;
-      transient = _aureliaDependencyInjection.transient;
-      Container = _aureliaDependencyInjection.Container;
-    }, function (_aureliaApi) {
-      Config = _aureliaApi.Config;
-    }, function (_aureliaMetadata) {
+    setters: [function (_aureliaMetadata) {
       metadata = _aureliaMetadata.metadata;
-    }, function (_aureliaValidation) {
-      Validation = _aureliaValidation.Validation;
-      ValidationGroup = _aureliaValidation.ValidationGroup;
-    }, function (_aureliaLogging) {
-      getLogger = _aureliaLogging.getLogger;
+    }, function (_defaultRepository) {
+      DefaultRepository = _defaultRepository.DefaultRepository;
     }],
     execute: function () {
       _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {

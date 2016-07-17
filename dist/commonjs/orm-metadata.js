@@ -9,21 +9,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _class, _temp;
 
-var _typer = require('typer');
-
-var _typer2 = _interopRequireDefault(_typer);
-
-var _aureliaDependencyInjection = require('aurelia-dependency-injection');
-
-var _aureliaApi = require('aurelia-api');
-
 var _aureliaMetadata = require('aurelia-metadata');
 
-var _aureliaValidation = require('aurelia-validation');
-
-var _aureliaLogging = require('aurelia-logging');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _defaultRepository = require('./default-repository');
 
 
 
@@ -44,7 +32,7 @@ var Metadata = exports.Metadata = (_temp = _class = function () {
     
 
     this.metadata = {
-      repository: DefaultRepository,
+      repository: _defaultRepository.DefaultRepository,
       resource: null,
       endpoint: null,
       name: null,

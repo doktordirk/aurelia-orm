@@ -1,18 +1,10 @@
-define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging'], function (exports, _typer, _aureliaDependencyInjection, _aureliaApi, _aureliaMetadata, _aureliaValidation, _aureliaLogging) {
+define(['exports', 'aurelia-metadata', './default-repository'], function (exports, _aureliaMetadata, _defaultRepository) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.Metadata = exports.OrmMetadata = undefined;
-
-  var _typer2 = _interopRequireDefault(_typer);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
 
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
@@ -41,7 +33,7 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
       
 
       this.metadata = {
-        repository: DefaultRepository,
+        repository: _defaultRepository.DefaultRepository,
         resource: null,
         endpoint: null,
         name: null,

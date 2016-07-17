@@ -1,9 +1,7 @@
-import typer from 'typer';
-import {inject,transient,Container} from 'aurelia-dependency-injection';
-import {Config} from 'aurelia-api';
-import {metadata} from 'aurelia-metadata';
-import {Validation,ValidationGroup} from 'aurelia-validation';
-import {getLogger} from 'aurelia-logging';
+import {Entity} from './entity';
+import {DefaultRepository} from './default-repository';
+import {Container, inject} from 'aurelia-dependency-injection';
+import {OrmMetadata} from './orm-metadata';
 
 /**
  * The EntityManager class

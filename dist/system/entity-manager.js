@@ -1,28 +1,22 @@
 'use strict';
 
-System.register(['typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging'], function (_export, _context) {
+System.register(['./entity', './default-repository', 'aurelia-dependency-injection', './orm-metadata'], function (_export, _context) {
   "use strict";
 
-  var typer, inject, transient, Container, Config, metadata, Validation, ValidationGroup, getLogger, _dec, _class, EntityManager;
+  var Entity, DefaultRepository, Container, inject, OrmMetadata, _dec, _class, EntityManager;
 
   
 
   return {
-    setters: [function (_typer) {
-      typer = _typer.default;
+    setters: [function (_entity) {
+      Entity = _entity.Entity;
+    }, function (_defaultRepository) {
+      DefaultRepository = _defaultRepository.DefaultRepository;
     }, function (_aureliaDependencyInjection) {
-      inject = _aureliaDependencyInjection.inject;
-      transient = _aureliaDependencyInjection.transient;
       Container = _aureliaDependencyInjection.Container;
-    }, function (_aureliaApi) {
-      Config = _aureliaApi.Config;
-    }, function (_aureliaMetadata) {
-      metadata = _aureliaMetadata.metadata;
-    }, function (_aureliaValidation) {
-      Validation = _aureliaValidation.Validation;
-      ValidationGroup = _aureliaValidation.ValidationGroup;
-    }, function (_aureliaLogging) {
-      getLogger = _aureliaLogging.getLogger;
+      inject = _aureliaDependencyInjection.inject;
+    }, function (_ormMetadata) {
+      OrmMetadata = _ormMetadata.OrmMetadata;
     }],
     execute: function () {
       _export('EntityManager', EntityManager = (_dec = inject(Container), _dec(_class = function () {

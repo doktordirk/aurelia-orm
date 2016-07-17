@@ -1,18 +1,10 @@
-define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging'], function (exports, _typer, _aureliaDependencyInjection, _aureliaApi, _aureliaMetadata, _aureliaValidation, _aureliaLogging) {
+define(['exports', 'aurelia-dependency-injection', './repository'], function (exports, _aureliaDependencyInjection, _repository) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.DefaultRepository = undefined;
-
-  var _typer2 = _interopRequireDefault(_typer);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
 
   
 
@@ -52,5 +44,5 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
     }
 
     return DefaultRepository;
-  }(Repository)) || _class);
+  }(_repository.Repository)) || _class);
 });

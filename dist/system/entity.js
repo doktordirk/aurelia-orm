@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging'], function (_export, _context) {
+System.register(['aurelia-validation', 'aurelia-dependency-injection', './orm-metadata'], function (_export, _context) {
   "use strict";
 
-  var typer, inject, transient, Container, Config, metadata, Validation, ValidationGroup, getLogger, _typeof, _dec, _dec2, _class, Entity;
+  var Validation, transient, inject, OrmMetadata, _typeof, _dec, _dec2, _class, Entity;
 
   
 
@@ -154,21 +154,13 @@ System.register(['typer', 'aurelia-dependency-injection', 'aurelia-api', 'aureli
     })[0];
   }
   return {
-    setters: [function (_typer) {
-      typer = _typer.default;
-    }, function (_aureliaDependencyInjection) {
-      inject = _aureliaDependencyInjection.inject;
-      transient = _aureliaDependencyInjection.transient;
-      Container = _aureliaDependencyInjection.Container;
-    }, function (_aureliaApi) {
-      Config = _aureliaApi.Config;
-    }, function (_aureliaMetadata) {
-      metadata = _aureliaMetadata.metadata;
-    }, function (_aureliaValidation) {
+    setters: [function (_aureliaValidation) {
       Validation = _aureliaValidation.Validation;
-      ValidationGroup = _aureliaValidation.ValidationGroup;
-    }, function (_aureliaLogging) {
-      getLogger = _aureliaLogging.getLogger;
+    }, function (_aureliaDependencyInjection) {
+      transient = _aureliaDependencyInjection.transient;
+      inject = _aureliaDependencyInjection.inject;
+    }, function (_ormMetadata) {
+      OrmMetadata = _ormMetadata.OrmMetadata;
     }],
     execute: function () {
       _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {

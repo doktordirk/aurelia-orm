@@ -9,19 +9,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _dec, _class;
 
-var _typer = require('typer');
-
-var _typer2 = _interopRequireDefault(_typer);
-
 var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
 var _aureliaApi = require('aurelia-api');
 
-var _aureliaMetadata = require('aurelia-metadata');
+var _typer = require('typer');
 
-var _aureliaValidation = require('aurelia-validation');
-
-var _aureliaLogging = require('aurelia-logging');
+var _typer2 = _interopRequireDefault(_typer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

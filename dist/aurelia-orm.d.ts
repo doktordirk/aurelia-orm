@@ -1,13 +1,16 @@
-import {inject,transient,Container} from 'aurelia-dependency-injection';
-import {Config} from 'aurelia-api';
-import {metadata} from 'aurelia-metadata';
-import {Validation,ValidationGroup,ValidationRule} from 'aurelia-validation';
 import {getLogger} from 'aurelia-logging';
+import {ValidationGroup,Validation,ValidationRule} from 'aurelia-validation';
+import {transient,Container,inject} from 'aurelia-dependency-injection';
+import {metadata} from 'aurelia-metadata';
+import {Config} from 'aurelia-api';
 import {bindingMode,BindingEngine} from 'aurelia-binding';
 import {bindable,customElement} from 'aurelia-templating';
 
 import './component/association-select';
 import './component/paged';
+export declare {
+  Repository
+} from 'aurelia-orm/repository';
 export declare {
   DefaultRepository
 } from 'aurelia-orm/default-repository';

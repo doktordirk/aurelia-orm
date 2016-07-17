@@ -3,7 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logger = exports.ValidationGroup = exports.HasAssociationValidationRule = exports.EntityManager = exports.data = exports.validatedResource = exports.type = exports.validation = exports.repository = exports.name = exports.endpoint = exports.resource = exports.association = exports.OrmMetadata = exports.Entity = exports.Repository = exports.DefaultRepository = undefined;
+exports.logger = exports.ValidationGroup = exports.HasAssociationValidationRule = exports.EntityManager = exports.data = exports.validatedResource = exports.type = exports.validation = exports.repository = exports.name = exports.endpoint = exports.resource = exports.association = exports.OrmMetadata = exports.Entity = exports.DefaultRepository = exports.Repository = undefined;
+
+var _repository = require('./repository');
+
+Object.defineProperty(exports, 'Repository', {
+  enumerable: true,
+  get: function get() {
+    return _repository.Repository;
+  }
+});
 
 var _defaultRepository = require('./default-repository');
 
@@ -13,9 +22,6 @@ Object.defineProperty(exports, 'DefaultRepository', {
     return _defaultRepository.DefaultRepository;
   }
 });
-
-var _repository = require('./repository');
-
 Object.defineProperty(exports, 'Repository', {
   enumerable: true,
   get: function get() {
@@ -123,33 +129,25 @@ Object.defineProperty(exports, 'data', {
 });
 exports.configure = configure;
 
-var _typer = require('typer');
+var _aureliaLogging = require('aurelia-logging');
 
-var _typer2 = _interopRequireDefault(_typer);
+var _entityManager = require('./entity-manager');
 
-var _aureliaDependencyInjection = require('aurelia-dependency-injection');
-
-var _aureliaApi = require('aurelia-api');
-
-var _aureliaMetadata = require('aurelia-metadata');
+var _hasAssociation = require('./validator/has-association');
 
 var _aureliaValidation = require('aurelia-validation');
-
-var _aureliaLogging = require('aurelia-logging');
 
 require('./component/association-select');
 
 require('./component/paged');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function configure(aurelia, configCallback) {
-  var entityManagerInstance = aurelia.container.get(EntityManager);
+  var entityManagerInstance = aurelia.container.get(_entityManager.EntityManager);
 
   configCallback(entityManagerInstance);
 
   _aureliaValidation.ValidationGroup.prototype.hasAssociation = function () {
-    return this.isNotEmpty().passesRule(new HasAssociationValidationRule());
+    return this.isNotEmpty().passesRule(new _hasAssociation.HasAssociationValidationRule());
   };
 
   aurelia.globalResources('./component/association-select');
@@ -158,7 +156,7 @@ function configure(aurelia, configCallback) {
 
 var logger = (0, _aureliaLogging.getLogger)('aurelia-orm');
 
-exports.EntityManager = EntityManager;
-exports.HasAssociationValidationRule = HasAssociationValidationRule;
+exports.EntityManager = _entityManager.EntityManager;
+exports.HasAssociationValidationRule = _hasAssociation.HasAssociationValidationRule;
 exports.ValidationGroup = _aureliaValidation.ValidationGroup;
 exports.logger = logger;

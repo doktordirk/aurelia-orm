@@ -1,11 +1,8 @@
 var _dec, _dec2, _class;
 
-import typer from 'typer';
-import { inject, transient, Container } from 'aurelia-dependency-injection';
-import { Config } from 'aurelia-api';
-import { metadata } from 'aurelia-metadata';
-import { Validation, ValidationGroup } from 'aurelia-validation';
-import { getLogger } from 'aurelia-logging';
+import { Validation } from 'aurelia-validation';
+import { transient, inject } from 'aurelia-dependency-injection';
+import { OrmMetadata } from './orm-metadata';
 
 export let Entity = (_dec = transient(), _dec2 = inject(Validation), _dec(_class = _dec2(_class = class Entity {
   constructor(validator) {

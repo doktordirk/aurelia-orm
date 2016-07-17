@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging'], function (_export, _context) {
+System.register(['aurelia-dependency-injection', './repository'], function (_export, _context) {
   "use strict";
 
-  var typer, inject, transient, Container, Config, metadata, Validation, ValidationGroup, getLogger, _dec, _class, DefaultRepository;
+  var transient, Repository, _dec, _class, DefaultRepository;
 
   
 
@@ -32,21 +32,10 @@ System.register(['typer', 'aurelia-dependency-injection', 'aurelia-api', 'aureli
   }
 
   return {
-    setters: [function (_typer) {
-      typer = _typer.default;
-    }, function (_aureliaDependencyInjection) {
-      inject = _aureliaDependencyInjection.inject;
+    setters: [function (_aureliaDependencyInjection) {
       transient = _aureliaDependencyInjection.transient;
-      Container = _aureliaDependencyInjection.Container;
-    }, function (_aureliaApi) {
-      Config = _aureliaApi.Config;
-    }, function (_aureliaMetadata) {
-      metadata = _aureliaMetadata.metadata;
-    }, function (_aureliaValidation) {
-      Validation = _aureliaValidation.Validation;
-      ValidationGroup = _aureliaValidation.ValidationGroup;
-    }, function (_aureliaLogging) {
-      getLogger = _aureliaLogging.getLogger;
+    }, function (_repository) {
+      Repository = _repository.Repository;
     }],
     execute: function () {
       _export('DefaultRepository', DefaultRepository = (_dec = transient(), _dec(_class = function (_Repository) {

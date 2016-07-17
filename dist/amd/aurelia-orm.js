@@ -1,10 +1,16 @@
-define(['exports', './default-repository', './repository', './entity', './orm-metadata', './decorator/association', './decorator/resource', './decorator/endpoint', './decorator/name', './decorator/repository', './decorator/validation', './decorator/type', './decorator/validated-resource', './decorator/data', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging', './component/association-select', './component/paged'], function (exports, _defaultRepository, _repository, _entity, _ormMetadata, _association, _resource, _endpoint, _name, _repository2, _validation, _type, _validatedResource, _data, _typer, _aureliaDependencyInjection, _aureliaApi, _aureliaMetadata, _aureliaValidation, _aureliaLogging) {
+define(['exports', './repository', './default-repository', './entity', './orm-metadata', './decorator/association', './decorator/resource', './decorator/endpoint', './decorator/name', './decorator/repository', './decorator/validation', './decorator/type', './decorator/validated-resource', './decorator/data', 'aurelia-logging', './entity-manager', './validator/has-association', 'aurelia-validation', './component/association-select', './component/paged'], function (exports, _repository, _defaultRepository, _entity, _ormMetadata, _association, _resource, _endpoint, _name, _repository2, _validation, _type, _validatedResource, _data, _aureliaLogging, _entityManager, _hasAssociation, _aureliaValidation) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.logger = exports.ValidationGroup = exports.HasAssociationValidationRule = exports.EntityManager = exports.data = exports.validatedResource = exports.type = exports.validation = exports.repository = exports.name = exports.endpoint = exports.resource = exports.association = exports.OrmMetadata = exports.Entity = exports.Repository = exports.DefaultRepository = undefined;
+  exports.logger = exports.ValidationGroup = exports.HasAssociationValidationRule = exports.EntityManager = exports.data = exports.validatedResource = exports.type = exports.validation = exports.repository = exports.name = exports.endpoint = exports.resource = exports.association = exports.OrmMetadata = exports.Entity = exports.DefaultRepository = exports.Repository = undefined;
+  Object.defineProperty(exports, 'Repository', {
+    enumerable: true,
+    get: function () {
+      return _repository.Repository;
+    }
+  });
   Object.defineProperty(exports, 'DefaultRepository', {
     enumerable: true,
     get: function () {
@@ -84,22 +90,13 @@ define(['exports', './default-repository', './repository', './entity', './orm-me
     }
   });
   exports.configure = configure;
-
-  var _typer2 = _interopRequireDefault(_typer);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
   function configure(aurelia, configCallback) {
-    var entityManagerInstance = aurelia.container.get(EntityManager);
+    var entityManagerInstance = aurelia.container.get(_entityManager.EntityManager);
 
     configCallback(entityManagerInstance);
 
     _aureliaValidation.ValidationGroup.prototype.hasAssociation = function () {
-      return this.isNotEmpty().passesRule(new HasAssociationValidationRule());
+      return this.isNotEmpty().passesRule(new _hasAssociation.HasAssociationValidationRule());
     };
 
     aurelia.globalResources('./component/association-select');
@@ -108,8 +105,8 @@ define(['exports', './default-repository', './repository', './entity', './orm-me
 
   var logger = (0, _aureliaLogging.getLogger)('aurelia-orm');
 
-  exports.EntityManager = EntityManager;
-  exports.HasAssociationValidationRule = HasAssociationValidationRule;
+  exports.EntityManager = _entityManager.EntityManager;
+  exports.HasAssociationValidationRule = _hasAssociation.HasAssociationValidationRule;
   exports.ValidationGroup = _aureliaValidation.ValidationGroup;
   exports.logger = logger;
 });

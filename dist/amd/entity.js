@@ -1,18 +1,10 @@
-define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging'], function (exports, _typer, _aureliaDependencyInjection, _aureliaApi, _aureliaMetadata, _aureliaValidation, _aureliaLogging) {
+define(['exports', 'aurelia-validation', 'aurelia-dependency-injection', './orm-metadata'], function (exports, _aureliaValidation, _aureliaDependencyInjection, _ormMetadata) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.Entity = undefined;
-
-  var _typer2 = _interopRequireDefault(_typer);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
 
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
     return typeof obj;
@@ -28,7 +20,7 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
     function Entity(validator) {
       
 
-      this.define('__meta', OrmMetadata.forTarget(this.constructor)).define('__cleanValues', {}, true);
+      this.define('__meta', _ormMetadata.OrmMetadata.forTarget(this.constructor)).define('__cleanValues', {}, true);
 
       if (!this.hasValidation()) {
         return this;
@@ -68,7 +60,7 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
     };
 
     Entity.getIdProperty = function getIdProperty() {
-      var idProperty = OrmMetadata.forTarget(this).fetch('idProperty');
+      var idProperty = _ormMetadata.OrmMetadata.forTarget(this).fetch('idProperty');
 
       return idProperty;
     };
@@ -300,7 +292,7 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
     };
 
     Entity.getResource = function getResource() {
-      return OrmMetadata.forTarget(this).fetch('resource');
+      return _ormMetadata.OrmMetadata.forTarget(this).fetch('resource');
     };
 
     Entity.prototype.getResource = function getResource() {
@@ -330,7 +322,7 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
     };
 
     Entity.getName = function getName() {
-      var metaName = OrmMetadata.forTarget(this).fetch('name');
+      var metaName = _ormMetadata.OrmMetadata.forTarget(this).fetch('name');
 
       if (metaName) {
         return metaName;

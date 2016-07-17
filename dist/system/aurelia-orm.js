@@ -1,33 +1,27 @@
 'use strict';
 
-System.register(['typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging', './component/association-select', './component/paged', './default-repository', './repository', './entity', './orm-metadata', './decorator/association', './decorator/resource', './decorator/endpoint', './decorator/name', './decorator/repository', './decorator/validation', './decorator/type', './decorator/validated-resource', './decorator/data'], function (_export, _context) {
+System.register(['aurelia-logging', './entity-manager', './validator/has-association', 'aurelia-validation', './component/association-select', './component/paged', './repository', './default-repository', './entity', './orm-metadata', './decorator/association', './decorator/resource', './decorator/endpoint', './decorator/name', './decorator/repository', './decorator/validation', './decorator/type', './decorator/validated-resource', './decorator/data'], function (_export, _context) {
   "use strict";
 
-  var typer, inject, transient, Container, Config, metadata, Validation, ValidationGroup, getLogger, logger;
+  var getLogger, EntityManager, HasAssociationValidationRule, ValidationGroup, logger;
   return {
-    setters: [function (_typer) {
-      typer = _typer.default;
-    }, function (_aureliaDependencyInjection) {
-      inject = _aureliaDependencyInjection.inject;
-      transient = _aureliaDependencyInjection.transient;
-      Container = _aureliaDependencyInjection.Container;
-    }, function (_aureliaApi) {
-      Config = _aureliaApi.Config;
-    }, function (_aureliaMetadata) {
-      metadata = _aureliaMetadata.metadata;
-    }, function (_aureliaValidation) {
-      Validation = _aureliaValidation.Validation;
-      ValidationGroup = _aureliaValidation.ValidationGroup;
-    }, function (_aureliaLogging) {
+    setters: [function (_aureliaLogging) {
       getLogger = _aureliaLogging.getLogger;
-    }, function (_componentAssociationSelect) {}, function (_componentPaged) {}, function (_defaultRepository) {
+    }, function (_entityManager) {
+      EntityManager = _entityManager.EntityManager;
+    }, function (_validatorHasAssociation) {
+      HasAssociationValidationRule = _validatorHasAssociation.HasAssociationValidationRule;
+    }, function (_aureliaValidation) {
+      ValidationGroup = _aureliaValidation.ValidationGroup;
+    }, function (_componentAssociationSelect) {}, function (_componentPaged) {}, function (_repository) {
       var _exportObj = {};
-      _exportObj.DefaultRepository = _defaultRepository.DefaultRepository;
+      _exportObj.Repository = _repository.Repository;
+      _exportObj.Repository = _repository.Repository;
 
       _export(_exportObj);
-    }, function (_repository) {
+    }, function (_defaultRepository) {
       var _exportObj2 = {};
-      _exportObj2.Repository = _repository.Repository;
+      _exportObj2.DefaultRepository = _defaultRepository.DefaultRepository;
 
       _export(_exportObj2);
     }, function (_entity) {

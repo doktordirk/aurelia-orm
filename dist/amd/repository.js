@@ -1,4 +1,4 @@
-define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aurelia-metadata', 'aurelia-validation', 'aurelia-logging'], function (exports, _typer, _aureliaDependencyInjection, _aureliaApi, _aureliaMetadata, _aureliaValidation, _aureliaLogging) {
+define(['exports', 'aurelia-dependency-injection', 'aurelia-api', 'typer'], function (exports, _aureliaDependencyInjection, _aureliaApi, _typer) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
