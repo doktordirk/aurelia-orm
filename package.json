@@ -132,7 +132,7 @@
   "aurelia": {
     "build": {
       "resources": [
-        "aurelia-orm/component/association-select"
+        "aurelia-orm/component/association-select",
         "aurelia-orm/component/paged"
       ]
     }
