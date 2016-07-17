@@ -132,9 +132,7 @@
   "aurelia": {
     "build": {
       "resources": [
-        "aurelia-orm/component/",
-        "aurelia-orm/decorator/",
-        "aurelia-orm/validator/"
+        "aurelia-orm/component/*"
       ]
     }
   }
