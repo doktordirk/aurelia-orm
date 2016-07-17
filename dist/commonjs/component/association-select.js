@@ -13,19 +13,13 @@ var _getProp = require('get-prop');
 
 var _getProp2 = _interopRequireDefault(_getProp);
 
-var _aureliaOrm = require('../aurelia-orm');
-
 var _aureliaDependencyInjection = require('aurelia-dependency-injection');
 
 var _aureliaBinding = require('aurelia-binding');
 
 var _aureliaTemplating = require('aurelia-templating');
 
-var _entityManager = require('../entity-manager');
-
-var _entity = require('../entity');
-
-var _ormMetadata = require('../orm-metadata');
+var _aureliaOrm = require('../aurelia-orm');
 
 var _extend = require('extend');
 
@@ -78,7 +72,7 @@ function _initializerWarningHelper(descriptor, context) {
   throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
 }
 
-var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplating.customElement)('association-select'), _dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.BindingEngine, _entityManager.EntityManager, Element), _dec3 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec(_class = _dec2(_class = (_class2 = function () {
+var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplating.customElement)('association-select'), _dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.BindingEngine, _aureliaOrm.EntityManager, Element), _dec3 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec(_class = _dec2(_class = (_class2 = function () {
   function AssociationSelect(bindingEngine, entityManager, element) {
     
 
@@ -134,7 +128,7 @@ var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplati
     var selectedValues = [];
 
     value.forEach(function (selected) {
-      selectedValues.push(selected instanceof _entity.Entity ? selected.id : selected);
+      selectedValues.push(selected instanceof _aureliaOrm.Entity ? selected.id : selected);
     });
 
     this.value = selectedValues;
@@ -229,7 +223,7 @@ var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplati
       return;
     }
 
-    this.ownMeta = _ormMetadata.OrmMetadata.forTarget(this.entityManager.resolveEntityReference(this.repository.getResource()));
+    this.ownMeta = _aureliaOrm.OrmMetadata.forTarget(this.entityManager.resolveEntityReference(this.repository.getResource()));
 
     if (this.manyAssociation) {
       this.observe(this.manyAssociation);

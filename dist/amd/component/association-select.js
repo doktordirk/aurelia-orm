@@ -1,4 +1,4 @@
-define(['exports', 'get-prop', '../aurelia-orm', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-templating', '../entity-manager', '../entity', '../orm-metadata', 'extend'], function (exports, _getProp, _aureliaOrm, _aureliaDependencyInjection, _aureliaBinding, _aureliaTemplating, _entityManager, _entity, _ormMetadata, _extend) {
+define(['exports', 'get-prop', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-templating', '../aurelia-orm', 'extend'], function (exports, _getProp, _aureliaDependencyInjection, _aureliaBinding, _aureliaTemplating, _aureliaOrm, _extend) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -69,7 +69,7 @@ define(['exports', 'get-prop', '../aurelia-orm', 'aurelia-dependency-injection',
 
   var _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9;
 
-  var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplating.customElement)('association-select'), _dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.BindingEngine, _entityManager.EntityManager, Element), _dec3 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec(_class = _dec2(_class = (_class2 = function () {
+  var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplating.customElement)('association-select'), _dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.BindingEngine, _aureliaOrm.EntityManager, Element), _dec3 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec(_class = _dec2(_class = (_class2 = function () {
     function AssociationSelect(bindingEngine, entityManager, element) {
       
 
@@ -125,7 +125,7 @@ define(['exports', 'get-prop', '../aurelia-orm', 'aurelia-dependency-injection',
       var selectedValues = [];
 
       value.forEach(function (selected) {
-        selectedValues.push(selected instanceof _entity.Entity ? selected.id : selected);
+        selectedValues.push(selected instanceof _aureliaOrm.Entity ? selected.id : selected);
       });
 
       this.value = selectedValues;
@@ -220,7 +220,7 @@ define(['exports', 'get-prop', '../aurelia-orm', 'aurelia-dependency-injection',
         return;
       }
 
-      this.ownMeta = _ormMetadata.OrmMetadata.forTarget(this.entityManager.resolveEntityReference(this.repository.getResource()));
+      this.ownMeta = _aureliaOrm.OrmMetadata.forTarget(this.entityManager.resolveEntityReference(this.repository.getResource()));
 
       if (this.manyAssociation) {
         this.observe(this.manyAssociation);

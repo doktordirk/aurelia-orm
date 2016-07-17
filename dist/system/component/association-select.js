@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['get-prop', '../aurelia-orm', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-templating', '../entity-manager', '../entity', '../orm-metadata', 'extend'], function (_export, _context) {
+System.register(['get-prop', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-templating', '../aurelia-orm', 'extend'], function (_export, _context) {
   "use strict";
 
-  var getProp, logger, inject, bindingMode, BindingEngine, bindable, customElement, EntityManager, Entity, OrmMetadata, extend, _typeof, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, AssociationSelect;
+  var getProp, inject, bindingMode, BindingEngine, bindable, customElement, EntityManager, Entity, OrmMetadata, logger, extend, _typeof, _dec, _dec2, _dec3, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, AssociationSelect;
 
   function _initDefineProp(target, property, descriptor, context) {
     if (!descriptor) return;
@@ -53,8 +53,6 @@ System.register(['get-prop', '../aurelia-orm', 'aurelia-dependency-injection', '
   return {
     setters: [function (_getProp) {
       getProp = _getProp.default;
-    }, function (_aureliaOrm) {
-      logger = _aureliaOrm.logger;
     }, function (_aureliaDependencyInjection) {
       inject = _aureliaDependencyInjection.inject;
     }, function (_aureliaBinding) {
@@ -63,12 +61,11 @@ System.register(['get-prop', '../aurelia-orm', 'aurelia-dependency-injection', '
     }, function (_aureliaTemplating) {
       bindable = _aureliaTemplating.bindable;
       customElement = _aureliaTemplating.customElement;
-    }, function (_entityManager) {
-      EntityManager = _entityManager.EntityManager;
-    }, function (_entity) {
-      Entity = _entity.Entity;
-    }, function (_ormMetadata) {
-      OrmMetadata = _ormMetadata.OrmMetadata;
+    }, function (_aureliaOrm) {
+      EntityManager = _aureliaOrm.EntityManager;
+      Entity = _aureliaOrm.Entity;
+      OrmMetadata = _aureliaOrm.OrmMetadata;
+      logger = _aureliaOrm.logger;
     }, function (_extend) {
       extend = _extend.default;
     }],
