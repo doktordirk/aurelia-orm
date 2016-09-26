@@ -1,7 +1,7 @@
 import {inject,transient,Container} from 'aurelia-dependency-injection';
 import {Config} from 'aurelia-api';
 import {metadata} from 'aurelia-metadata';
-import {Validation,ValidationRule,ValidationGroup} from 'aurelia-validation';
+import {Validator,ValidationRules} from 'aurelia-validation';
 import {getLogger} from 'aurelia-logging';
 import {bindingMode,BindingEngine} from 'aurelia-binding';
 import {bindable,customElement} from 'aurelia-templating';
@@ -199,11 +199,11 @@ export declare class Entity {
   /**
      * Construct a new entity.
      *
-     * @param {Validation} validator
+     * @param {Validator} validator
      *
      * @return {Entity}
      */
-  constructor(validator?: any);
+  constructor();
   
   /**
      * Get the transport for the resource this repository represents.
@@ -420,20 +420,20 @@ export declare class Entity {
   setData(data?: any, markClean?: any): any;
   
   /**
-     * Enable validation for this entity.
+     * Set the validator instance.
      *
-     * @return {Entity} this
-     * @throws {Error}
+     * @param {Validator} validator
+     * @return {this}
      * @chainable
      */
-  enableValidation(): any;
+  setValidator(validator?: any): any;
   
   /**
-     * Get the validation instance.
+     * Get the validator instance.
      *
-     * @return {Validation}
+     * @return {Validator}
      */
-  getValidation(): any;
+  getValidator(): any;
   
   /**
      * Check if entity has validation enabled.
@@ -441,6 +441,17 @@ export declare class Entity {
      * @return {boolean}
      */
   hasValidation(): any;
+  
+  /**
+     * Validates the entity
+     *
+     * @param {string|null} propertyName Optional. The name of the property to validate. If unspecified,
+     * all properties will be validated.
+     * @param {Rule<any, any>[]|null} rules Optional. If unspecified, the rules will be looked up using
+     * the metadata for the object created by ValidationRules....on(class/object)
+     * @return {Promise<ValidationError[]>}
+     */
+  validate(propertyName?: any, rules?: any): any;
   
   /**
      * Get the data in this entity as a POJO.
@@ -520,11 +531,13 @@ export declare function type(typeValue?: any): any;
 /**
  * Set the 'validation' metadata to 'true'
  *
+ * @param {[function]} ValidatorClass = Validator
+ *
  * @return {Function}
  *
  * @decorator
  */
-export declare function validation(): any;
+export declare function validation(ValidatorClass?: any): any;
 
 /**
  * The EntityManager class
@@ -541,24 +554,24 @@ export declare class EntityManager {
   constructor(container?: any);
   
   /**
-     * Register an array of entity references.
+     * Register an array of entity classes.
      *
-     * @param {Entity[]|Entity} entities Array or object of entities.
+     * @param {function[]|function} Entity classes array or object of Entity constructors.
      *
      * @return {EntityManager} this
      * @chainable
      */
-  registerEntities(entities?: any): any;
+  registerEntities(EntityClasses?: any): any;
   
   /**
-     * Register an Entity reference.
+     * Register an Entity class.
      *
-     * @param {Entity} entity
+     * @param {function} EntityClass
      *
      * @return {EntityManager} this
      * @chainable
      */
-  registerEntity(entity?: any): any;
+  registerEntity(EntityClass?: any): any;
   
   /**
      * Get a repository instance.
@@ -589,23 +602,18 @@ export declare class EntityManager {
      */
   getEntity(entity?: any): any;
 }
-export declare class HasAssociationValidationRule extends ValidationRule {
-  constructor();
-}
 
 /**
  * Set the 'resource' metadata and enables validation on the entity
  *
  * @param {String} resourceName The name of the resource
+ * @param {[function]} ValidatorClass = Validator
  *
  * @return {Function}
  *
  * @decorator
  */
-export declare function validatedResource(resourceName?: any): any;
-
-// eslint-disable-line no-unused-vars
-// eslint-disable-line no-unused-vars
+export declare function validatedResource(resourceName?: any, ValidatorClass?: any): any;
 export declare function configure(aurelia?: any, configCallback?: any): any;
 export declare const logger: any;
 
@@ -652,9 +660,8 @@ export declare class AssociationSelect {
      *
      * @param {BindingEngine} bindingEngine
      * @param {EntityManager} entityManager
-     * @param {Element}       element
      */
-  constructor(bindingEngine?: any, entityManager?: any, element?: any);
+  constructor(bindingEngine?: any, entityManager?: any);
   
   /**
      * (Re)Load the data for the select.
@@ -713,11 +720,11 @@ export declare class AssociationSelect {
   isChanged(property?: any, newVal?: any, oldVal?: any): any;
   
   /**
-   * Change resource
-   *
-   * @param  {{}} newVal New criteria value
-   * @param  {{}} oldVal Old criteria value
-   */
+     * Change resource
+     *
+     * @param  {{}} newVal New criteria value
+     * @param  {{}} oldVal Old criteria value
+     */
   resourceChanged(resource?: any): any;
   
   /**

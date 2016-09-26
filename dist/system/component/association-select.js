@@ -75,7 +75,7 @@ System.register(['../aurelia-orm', 'get-prop', 'aurelia-dependency-injection', '
       };
 
       _export('AssociationSelect', AssociationSelect = (_dec = customElement('association-select'), _dec2 = inject(BindingEngine, EntityManager, Element), _dec3 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec(_class = _dec2(_class = (_class2 = function () {
-        function AssociationSelect(bindingEngine, entityManager, element) {
+        function AssociationSelect(bindingEngine, entityManager) {
           
 
           _initDefineProp(this, 'criteria', _descriptor, this);
@@ -109,7 +109,6 @@ System.register(['../aurelia-orm', 'get-prop', 'aurelia-dependency-injection', '
           this._subscriptions = [];
           this.bindingEngine = bindingEngine;
           this.entityManager = entityManager;
-          this.element = element;
         }
 
         AssociationSelect.prototype.load = function load(reservedValue) {
@@ -164,8 +163,7 @@ System.register(['../aurelia-orm', 'get-prop', 'aurelia-dependency-injection', '
 
             delete criteria.populate;
 
-            var property = this.propertyForResource(assoc.getMeta(), repository.getResource());
-            findPath = assoc.getResource() + '/' + assoc.getId() + '/' + property;
+            findPath = assoc.getResource() + '/' + assoc.getId() + '/' + findPath;
           } else if (this.association) {
             var associations = Array.isArray(this.association) ? this.association : [this.association];
 

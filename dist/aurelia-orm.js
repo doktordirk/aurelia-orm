@@ -2,7 +2,7 @@ import typer from 'typer';
 import {inject,transient,Container} from 'aurelia-dependency-injection';
 import {Config} from 'aurelia-api';
 import {metadata} from 'aurelia-metadata';
-import {Validation,ValidationRule,ValidationGroup} from 'aurelia-validation';
+import {Validator,ValidationRules} from 'aurelia-validation';
 import {getLogger} from 'aurelia-logging';
 
 /**
@@ -354,28 +354,19 @@ export class Metadata {
  * @transient
  */
 @transient()
-@inject(Validation)
 export class Entity {
 
   /**
    * Construct a new entity.
    *
-   * @param {Validation} validator
+   * @param {Validator} validator
    *
    * @return {Entity}
    */
-  constructor(validator) {
+  constructor() {
     this
       .define('__meta', OrmMetadata.forTarget(this.constructor))
       .define('__cleanValues', {}, true);
-
-    // No validation? No need to set the validator.
-    if (!this.hasValidation()) {
-      return this;
-    }
-
-    // Set the validator.
-    return this.define('__validator', validator);
   }
 
   /**
@@ -689,7 +680,7 @@ export class Entity {
    * @return {boolean}
    */
   isNew() {
-    return typeof this.getId() === 'undefined';
+    return !this.getId();
   }
 
   /**
@@ -844,39 +835,30 @@ export class Entity {
   }
 
   /**
-   * Enable validation for this entity.
+   * Set the validator instance.
    *
-   * @return {Entity} this
-   * @throws {Error}
+   * @param {Validator} validator
+   * @return {this}
    * @chainable
    */
-  enableValidation() {
-    if (!this.hasValidation()) {
-      throw new Error('Entity not marked as validated. Did you forget the @validation() decorator?');
-    }
+  setValidator(validator) {
+    this.define('__validator', validator);
 
-    if (this.__validation) {
-      return this;
-    }
-
-    return this.define('__validation', this.__validator.on(this));
+    return this;
   }
 
+
   /**
-   * Get the validation instance.
+   * Get the validator instance.
    *
-   * @return {Validation}
+   * @return {Validator}
    */
-  getValidation() {
+  getValidator() {
     if (!this.hasValidation()) {
       return null;
     }
 
-    if (!this.__validation) {
-      this.enableValidation();
-    }
-
-    return this.__validation;
+    return this.__validator;
   }
 
   /**
@@ -886,6 +868,25 @@ export class Entity {
    */
   hasValidation() {
     return !!this.getMeta().fetch('validation');
+  }
+
+  /**
+   * Validates the entity
+   *
+   * @param {string|null} propertyName Optional. The name of the property to validate. If unspecified,
+   * all properties will be validated.
+   * @param {Rule<any, any>[]|null} rules Optional. If unspecified, the rules will be looked up using
+   * the metadata for the object created by ValidationRules....on(class/object)
+   * @return {Promise<ValidationError[]>}
+   */
+  validate(propertyName, rules) {
+    // entities without validation are to be considered valid
+    if (!this.hasValidation()) {
+      return Promise.resolve([]);
+    }
+
+    return propertyName ? this.getValidator().validateProperty(this, propertyName, rules)
+                        : this.getValidator().validateObject(this, rules);
   }
 
   /**
@@ -1197,13 +1198,15 @@ export function type(typeValue) {
 /**
  * Set the 'validation' metadata to 'true'
  *
+ * @param {[function]} ValidatorClass = Validator
+ *
  * @return {Function}
  *
  * @decorator
  */
-export function validation() {
+export function validation(ValidatorClass = Validator) {
   return function(target) {
-    OrmMetadata.forTarget(target).put('validation', true);
+    OrmMetadata.forTarget(target).put('validation', ValidatorClass);
   };
 }
 
@@ -1225,35 +1228,41 @@ export class EntityManager {
   }
 
   /**
-   * Register an array of entity references.
+   * Register an array of entity classes.
    *
-   * @param {Entity[]|Entity} entities Array or object of entities.
+   * @param {function[]|function} Entity classes array or object of Entity constructors.
    *
    * @return {EntityManager} this
    * @chainable
    */
-  registerEntities(entities) {
-    for (let reference in entities) {
-      if (!entities.hasOwnProperty(reference)) {
-        continue;
+  registerEntities(EntityClasses) {
+    for (let property in EntityClasses) {
+      if (EntityClasses.hasOwnProperty(property)) {
+        this.registerEntity(EntityClasses[property]);
       }
-
-      this.registerEntity(entities[reference]);
     }
 
     return this;
   }
 
   /**
-   * Register an Entity reference.
+   * Register an Entity class.
    *
-   * @param {Entity} entity
+   * @param {function} EntityClass
    *
    * @return {EntityManager} this
    * @chainable
    */
-  registerEntity(entity) {
-    this.entities[OrmMetadata.forTarget(entity).fetch('resource')] = entity;
+  registerEntity(EntityClass) {
+    if (!Entity.isPrototypeOf(EntityClass)) {
+      throw new Error(`
+        Trying to register non-Entity with aurelia-orm.
+        Are you using 'import *' to load your entities?
+        <http://aurelia-orm.spoonx.org/configuration.html>
+      `);
+    }
+
+    this.entities[OrmMetadata.forTarget(EntityClass).fetch('resource')] = EntityClass;
 
     return this;
   }
@@ -1348,18 +1357,14 @@ export class EntityManager {
       resource = entity;
     }
 
-    return instance.setResource(resource).setRepository(this.getRepository(resource));
-  }
-}
+    // Set the validator.
+    if (instance.hasValidation() && !(instance.getValidator())) {
+      let validator = this.container.get(OrmMetadata.forTarget(reference).fetch('validation'));
 
-export class HasAssociationValidationRule extends ValidationRule {
-  constructor() {
-    super(
-      null,
-      value => !!((value instanceof Entity && typeof value.id === 'number') || typeof value === 'number'),
-      null,
-      'isRequired'
-    );
+      instance.setValidator(validator);
+    }
+
+    return instance.setResource(resource).setRepository(this.getRepository(resource));
   }
 }
 
@@ -1367,29 +1372,30 @@ export class HasAssociationValidationRule extends ValidationRule {
  * Set the 'resource' metadata and enables validation on the entity
  *
  * @param {String} resourceName The name of the resource
+ * @param {[function]} ValidatorClass = Validator
  *
  * @return {Function}
  *
  * @decorator
  */
-export function validatedResource(resourceName) {
+export function validatedResource(resourceName, ValidatorClass) {
   return function(target, propertyName) {
     resource(resourceName)(target);
-    validation()(target, propertyName);
+    validation(ValidatorClass)(target, propertyName);
   };
 }
 
-// eslint-disable-line no-unused-vars
-// eslint-disable-line no-unused-vars
-
 export function configure(aurelia, configCallback) {
+  // add hasAssociation custom validation rule
+  ValidationRules.customRule(
+    'hasAssociation',
+    value => !!((value instanceof Entity && typeof value.id === 'number') || typeof value === 'number'),
+    `\${$displayName} must be an association.`    // eslint-disable-line quotes
+  );
+
   let entityManagerInstance = aurelia.container.get(EntityManager);
 
   configCallback(entityManagerInstance);
-
-  ValidationGroup.prototype.hasAssociation = function() {
-    return this.isNotEmpty().passesRule(new HasAssociationValidationRule());
-  };
 
   aurelia.globalResources('./component/association-select');
   aurelia.globalResources('./component/paged');
