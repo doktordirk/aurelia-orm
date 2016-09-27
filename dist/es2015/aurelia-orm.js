@@ -399,7 +399,7 @@ export let Entity = (_dec3 = transient(), _dec4 = inject(Validation), _dec3(_cla
   }
 
   isNew() {
-    return typeof this.getId() === 'undefined';
+    return !this.getId();
   }
 
   reset(shallow) {
@@ -689,7 +689,10 @@ function getPropertyForAssociation(forEntity, entity) {
 }
 
 export function association(associationData) {
-  return function (target, propertyName) {
+  return function (target, propertyName, descriptor) {
+    descriptor.configurable = true;
+    Object.defineProperty(target, propertyName, descriptor);
+
     if (!associationData) {
       associationData = { entity: propertyName };
     } else if (typeof associationData === 'string') {
@@ -728,7 +731,10 @@ export function resource(resourceName) {
 }
 
 export function type(typeValue) {
-  return function (target, propertyName) {
+  return function (target, propertyName, descriptor) {
+    descriptor.configurable = true;
+    Object.defineProperty(target, propertyName, descriptor);
+
     OrmMetadata.forTarget(target.constructor).put('types', propertyName, typeValue);
   };
 }
@@ -747,20 +753,26 @@ export let EntityManager = (_dec5 = inject(Container), _dec5(_class6 = class Ent
     this.container = container;
   }
 
-  registerEntities(entities) {
-    for (let reference in entities) {
-      if (!entities.hasOwnProperty(reference)) {
-        continue;
+  registerEntities(EntityClasses) {
+    for (let property in EntityClasses) {
+      if (EntityClasses.hasOwnProperty(property)) {
+        this.registerEntity(EntityClasses[property]);
       }
-
-      this.registerEntity(entities[reference]);
     }
 
     return this;
   }
 
-  registerEntity(entity) {
-    this.entities[OrmMetadata.forTarget(entity).fetch('resource')] = entity;
+  registerEntity(EntityClass) {
+    if (!Entity.isPrototypeOf(EntityClass)) {
+      throw new Error(`
+        Trying to register non-Entity with aurelia-orm.
+        Are you using 'import *' to load your entities?
+        <http://aurelia-orm.spoonx.org/configuration.html>
+      `);
+    }
+
+    this.entities[OrmMetadata.forTarget(EntityClass).fetch('resource')] = EntityClass;
 
     return this;
   }

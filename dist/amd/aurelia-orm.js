@@ -511,7 +511,7 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
     };
 
     Entity.prototype.isNew = function isNew() {
-      return typeof this.getId() === 'undefined';
+      return !this.getId();
     };
 
     Entity.prototype.reset = function reset(shallow) {
@@ -805,7 +805,10 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
   }
 
   function association(associationData) {
-    return function (target, propertyName) {
+    return function (target, propertyName, descriptor) {
+      descriptor.configurable = true;
+      Object.defineProperty(target, propertyName, descriptor);
+
       if (!associationData) {
         associationData = { entity: propertyName };
       } else if (typeof associationData === 'string') {
@@ -844,7 +847,10 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
   }
 
   function type(typeValue) {
-    return function (target, propertyName) {
+    return function (target, propertyName, descriptor) {
+      descriptor.configurable = true;
+      Object.defineProperty(target, propertyName, descriptor);
+
       OrmMetadata.forTarget(target.constructor).put('types', propertyName, typeValue);
     };
   }
@@ -865,20 +871,22 @@ define(['exports', 'typer', 'aurelia-dependency-injection', 'aurelia-api', 'aure
       this.container = container;
     }
 
-    EntityManager.prototype.registerEntities = function registerEntities(entities) {
-      for (var reference in entities) {
-        if (!entities.hasOwnProperty(reference)) {
-          continue;
+    EntityManager.prototype.registerEntities = function registerEntities(EntityClasses) {
+      for (var property in EntityClasses) {
+        if (EntityClasses.hasOwnProperty(property)) {
+          this.registerEntity(EntityClasses[property]);
         }
-
-        this.registerEntity(entities[reference]);
       }
 
       return this;
     };
 
-    EntityManager.prototype.registerEntity = function registerEntity(entity) {
-      this.entities[OrmMetadata.forTarget(entity).fetch('resource')] = entity;
+    EntityManager.prototype.registerEntity = function registerEntity(EntityClass) {
+      if (!Entity.isPrototypeOf(EntityClass)) {
+        throw new Error('\n        Trying to register non-Entity with aurelia-orm.\n        Are you using \'import *\' to load your entities?\n        <http://aurelia-orm.spoonx.org/configuration.html>\n      ');
+      }
+
+      this.entities[OrmMetadata.forTarget(EntityClass).fetch('resource')] = EntityClass;
 
       return this;
     };

@@ -541,24 +541,24 @@ export declare class EntityManager {
   constructor(container?: any);
   
   /**
-     * Register an array of entity references.
+     * Register an array of entity classes.
      *
-     * @param {Entity[]|Entity} entities Array or object of entities.
+     * @param {function[]|function} Entity classes array or object of Entity constructors.
      *
      * @return {EntityManager} this
      * @chainable
      */
-  registerEntities(entities?: any): any;
+  registerEntities(EntityClasses?: any): any;
   
   /**
-     * Register an Entity reference.
+     * Register an Entity class.
      *
-     * @param {Entity} entity
+     * @param {function} EntityClass
      *
      * @return {EntityManager} this
      * @chainable
      */
-  registerEntity(entity?: any): any;
+  registerEntity(EntityClass?: any): any;
   
   /**
      * Get a repository instance.
@@ -603,9 +603,6 @@ export declare class HasAssociationValidationRule extends ValidationRule {
  * @decorator
  */
 export declare function validatedResource(resourceName?: any): any;
-
-// eslint-disable-line no-unused-vars
-// eslint-disable-line no-unused-vars
 export declare function configure(aurelia?: any, configCallback?: any): any;
 export declare const logger: any;
 
@@ -652,9 +649,8 @@ export declare class AssociationSelect {
      *
      * @param {BindingEngine} bindingEngine
      * @param {EntityManager} entityManager
-     * @param {Element}       element
      */
-  constructor(bindingEngine?: any, entityManager?: any, element?: any);
+  constructor(bindingEngine?: any, entityManager?: any);
   
   /**
      * (Re)Load the data for the select.
@@ -713,11 +709,11 @@ export declare class AssociationSelect {
   isChanged(property?: any, newVal?: any, oldVal?: any): any;
   
   /**
-   * Change resource
-   *
-   * @param  {{}} newVal New criteria value
-   * @param  {{}} oldVal Old criteria value
-   */
+     * Change resource
+     *
+     * @param  {{}} newVal New criteria value
+     * @param  {{}} oldVal Old criteria value
+     */
   resourceChanged(resource?: any): any;
   
   /**

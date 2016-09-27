@@ -68,7 +68,7 @@ define(['exports', '../aurelia-orm', 'get-prop', 'aurelia-dependency-injection',
   var _dec, _dec2, _dec3, _dec4, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14;
 
   var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplating.customElement)('association-select'), _dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.BindingEngine, _aureliaOrm.EntityManager, Element), _dec3 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec4 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec(_class = _dec2(_class = (_class2 = function () {
-    function AssociationSelect(bindingEngine, entityManager, element) {
+    function AssociationSelect(bindingEngine, entityManager) {
       
 
       _initDefineProp(this, 'criteria', _descriptor, this);
@@ -102,7 +102,6 @@ define(['exports', '../aurelia-orm', 'get-prop', 'aurelia-dependency-injection',
       this._subscriptions = [];
       this.bindingEngine = bindingEngine;
       this.entityManager = entityManager;
-      this.element = element;
     }
 
     AssociationSelect.prototype.load = function load(reservedValue) {
@@ -157,8 +156,7 @@ define(['exports', '../aurelia-orm', 'get-prop', 'aurelia-dependency-injection',
 
         delete criteria.populate;
 
-        var property = this.propertyForResource(assoc.getMeta(), repository.getResource());
-        findPath = assoc.getResource() + '/' + assoc.getId() + '/' + property;
+        findPath = assoc.getResource() + '/' + assoc.getId() + '/' + findPath;
       } else if (this.association) {
         var associations = Array.isArray(this.association) ? this.association : [this.association];
 

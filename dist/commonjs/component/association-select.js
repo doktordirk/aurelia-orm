@@ -69,7 +69,7 @@ function _initializerWarningHelper(descriptor, context) {
 }
 
 var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplating.customElement)('association-select'), _dec2 = (0, _aureliaDependencyInjection.inject)(_aureliaBinding.BindingEngine, _aureliaOrm.EntityManager, Element), _dec3 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec4 = (0, _aureliaTemplating.bindable)({ defaultBindingMode: _aureliaBinding.bindingMode.twoWay }), _dec(_class = _dec2(_class = (_class2 = function () {
-  function AssociationSelect(bindingEngine, entityManager, element) {
+  function AssociationSelect(bindingEngine, entityManager) {
     
 
     _initDefineProp(this, 'criteria', _descriptor, this);
@@ -103,7 +103,6 @@ var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplati
     this._subscriptions = [];
     this.bindingEngine = bindingEngine;
     this.entityManager = entityManager;
-    this.element = element;
   }
 
   AssociationSelect.prototype.load = function load(reservedValue) {
@@ -158,8 +157,7 @@ var AssociationSelect = exports.AssociationSelect = (_dec = (0, _aureliaTemplati
 
       delete criteria.populate;
 
-      var property = this.propertyForResource(assoc.getMeta(), repository.getResource());
-      findPath = assoc.getResource() + '/' + assoc.getId() + '/' + property;
+      findPath = assoc.getResource() + '/' + assoc.getId() + '/' + findPath;
     } else if (this.association) {
       var associations = Array.isArray(this.association) ? this.association : [this.association];
 

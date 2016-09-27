@@ -51,7 +51,7 @@ import { bindable, customElement } from 'aurelia-templating';
 import { EntityManager, Entity, OrmMetadata } from '../aurelia-orm';
 
 export let AssociationSelect = (_dec = customElement('association-select'), _dec2 = inject(BindingEngine, EntityManager, Element), _dec3 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec4 = bindable({ defaultBindingMode: bindingMode.twoWay }), _dec(_class = _dec2(_class = (_class2 = class AssociationSelect {
-  constructor(bindingEngine, entityManager, element) {
+  constructor(bindingEngine, entityManager) {
     _initDefineProp(this, 'criteria', _descriptor, this);
 
     _initDefineProp(this, 'repository', _descriptor2, this);
@@ -83,7 +83,6 @@ export let AssociationSelect = (_dec = customElement('association-select'), _dec
     this._subscriptions = [];
     this.bindingEngine = bindingEngine;
     this.entityManager = entityManager;
-    this.element = element;
   }
 
   load(reservedValue) {
@@ -134,8 +133,7 @@ export let AssociationSelect = (_dec = customElement('association-select'), _dec
 
       delete criteria.populate;
 
-      let property = this.propertyForResource(assoc.getMeta(), repository.getResource());
-      findPath = `${ assoc.getResource() }/${ assoc.getId() }/${ property }`;
+      findPath = `${ assoc.getResource() }/${ assoc.getId() }/${ findPath }`;
     } else if (this.association) {
       let associations = Array.isArray(this.association) ? this.association : [this.association];
 
