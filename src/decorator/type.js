@@ -10,7 +10,11 @@ import {OrmMetadata} from '../orm-metadata';
  * @decorator
  */
 export function type(typeValue) {
-  return function(target, propertyName) {
+  return function(target, propertyName, descriptor) {
+    // fix for babels property decorator
+    descriptor.configurable = true;
+    Object.defineProperty(target, propertyName, descriptor);
+
     OrmMetadata.forTarget(target.constructor).put('types', propertyName, typeValue);
   };
 }

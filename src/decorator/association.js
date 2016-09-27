@@ -10,7 +10,11 @@ import {OrmMetadata} from '../orm-metadata';
  * @decorator
  */
 export function association(associationData) {
-  return function(target, propertyName) {
+  return function(target, propertyName, descriptor) {
+    // fix for babels property decorator
+    descriptor.configurable = true;
+    Object.defineProperty(target, propertyName, descriptor);
+
     if (!associationData) {
       associationData = {entity: propertyName};
     } else if (typeof associationData === 'string') {
